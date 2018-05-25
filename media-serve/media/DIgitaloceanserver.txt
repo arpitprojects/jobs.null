@@ -1,0 +1,59 @@
+1. Open terminal - root@139.59.37.83
+2. Put the password - Arpit@**********
+3. sudo apt-get update
+4. We will be installing apache2
+-	sudo apt-get install apache2
+
+5. Open the ip adress  139.59.37.83 if you see the apache page, then wala! it worked.
+6. NOw we need to know where to locate the default page
+7. Navigate to /var/www/html
+8. Always put the / before var
+9. Now see the index.html
+10. to empty the content of the file.
+11. INstall php in the sever
+- sudo apt-get install php libapache2-mod-php php-mcrypt php-mysql
+12- sudo apt-get install mysql-server
+13. mysql_secure_installation
+14. mysql -u root -p <-
+password provide
+
+15. we can even use php myadmin
+16. Using sftp
+17.Str away coonect with root passwords.
+18.phpmyadmin - sudo apt-get install phpmyadmin php-mbstring php-gettext
+sudo phpenmod mcrypt
+sudo phpenmod mbstring
+sudo systemctl restart apache2
+------------------------------------------
+
+Security Aspects:
+
+1.Dont use passwords use keys
+2. ssh-keygen -t rsa
+
+Arpit
+cd users/alaexgarret/.ssh
+id_rsa
+private key
+
+---------------------------------------------------
+1. django
+-> 
+id_rsa;pub is public key
+----------------------------------------------------------------------------
+
+After creating the droplet, server do this to install python3 django
+sudo apt get-update 
+sudo apt-get -y upgrade
+
+1. sudo apt-get -y install build-essential libpq-dev python-dev
+2. sudo apt-get -y install postgresql postgresql-contrib
+
+
+http://paletton.com/#uid=13o0u0kiFfKbqoZfbkdmZcJs78x
+
+
+
+
+
+

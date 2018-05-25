@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9">
+      <div class="card border-radius-0" style="background-color:#fafafa;border-left:4px solid #000;">
+        <div class="row">
+        <div class="col-sm-6">
+          <div class="float-left" style="margin-left:10px;">
+            {% for b in basic %}
+                <!-- {% if b.picture  %}
+                  <img src="{{MEDIA_URL}}{{b.picture.url}}"/>
+                {% endif %} -->
+                {% if  b.picture %}
+                  <img src="/static/img/faces/avatar.jpg" id="img-resume-page" class="card"/>
+                {% endif %}
+                {% if not  b.picture %}
+                  <img src="/static/img/faces/avatar.jpg" id="img-resume-page" class="card"/>
+                {% endif %}
+            {% endfor %}
+            {% for i in initial %}
+              <p style="font-size:11px;position: relative;left:0px;top:-15px;" class="text-muted"><i class="material-icons" style="position:relative;top:7px;color:green;">radio_button_unchecked</i>&nbsp;Last login - {{i.last_login}}</p>
+            {% endfor %}
+          </div>
+          <div class="resume-page-mobile-texts">
+            <br /><br /> <br />
+            {% for i in initial %}
+              <p style="font-size:24px;position: relative;left:-24px;" class="text-muted"><i class="material-icons" style="position:relative;top:4.5px;">person_outline</i>&nbsp;{{i.first_name }}  {{i.last_name}}</p>
+              <br />
+              <p style="font-size:16px;position: relative;left:-24px;" class="text-muted"><i class="material-icons" style="position:relative;top:7.5px;">email</i>&nbsp;{{i.email }}</p>
+              <br />
+              <p style="font-size:12px;position: relative;left:-24px;" class="text-muted"><i class="material-icons" style="position:relative;top:7px;">public</i>&nbsp;Active since - {{i.created_on | date}}</p>
+            {% endfor %}
+          </div>
+          </div>
+        <div class="col-sm-6">
+          <div class="float-right" style="text-align:right;margin-right:15px;">
+            <br /><br />
+            {% for b in basic %}
+              <p style="font-size:16px;position: relative;left:-24px;" class="text-muted"><i class="material-icons" style="position:relative;top:4.5px;">location_on</i>&nbsp;{{b.current_city }}</p>
+              <br />
+              <p style="font-size:16px;position: relative;left:-24px;" class="text-muted"><i class="material-icons" style="position:relative;top:7.5px;">how_to_reg</i>&nbsp;{{b.current_status }}</p>
+              <br />
+              <p style="font-size:12px;position: relative;left:-24px;" class="text-muted"><i class="material-icons" style="position:relative;top:7px;">where_to_vote</i>&nbsp;{{b.preffered_place}}</p>
+              <br />
+              <p style="font-size:12px;position: relative;left:-24px;" class="text-muted"><i class="material-icons" style="position:relative;top:7px;">location_city</i>&nbsp;{{b.address_line1}} , <br />{{b.address_line2}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="col-m-3">
+      <div class="card">
+        <div>
+          <div class="arrow"></div>
+          <div class="popover-body">
+            <ul class="inline-block text-center">
+              <li class="dropdown av-item">
+                  <a href="/employee/details/" class="btn btn-blue btn-raised btn-fab btn-round">
+                      <i class="material-icons">file_copy</i>
+                  </a>
+              </li>
+              <li class="dropdown av-item" >
+                  <a href="/employee/details/" style="background-color: #3b5998 !important;" class="btn btn-blue btn-raised btn-fab btn-round">
+                      <i class="fa fa-facebook"></i>
+                  </a>
+              </li>
+              <li class="dropdown av-item">
+                  <a href="/employee/details/" style="background-color: #517fa4 !important;" class="btn btn-blue btn-raised btn-fab btn-round">
+                      <i class="fa fa-instagram"></i>
+                  </a>
+              </li>
+              <li class="dropdown av-item">
+                  <a href="/employee/details/" style="background-color: #25d366 !important;" class="btn btn-blue btn-raised btn-fab btn-round">
+                      <i class="fa fa-whatsapp"></i>
+                  </a>
+              </li>
+              <li class="dropdown av-item">
+                  <a href="/employee/details/" style="background-color: #00aced !important;" class="btn btn-blue btn-raised btn-fab btn-round">
+                      <i class="fa fa-twitter"></i>
+                  </a>
+              </li>
+            </ul>
+
+          </div>
+
+          <h3 class="popover-header">
+            <center>
+                <button class="btn btn-small capitalize" id="export-as-pdf"><i class="material-icons">attach_file</i>Download Resume</button>
+            </center>
+          </h3>
+          <h3 class="popover-header">
+            <center>
+              <p>
+                <button style="visibility:hidden;" class="btn btn-raised ">Copy url</button>
+              </p>
+            </center>
+          </h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<section id="education-details">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <p class="text-muted font-size-18px">Education Details</p>
+        <!-- <hr/> -->
+        <div class="card card-1 border-radius-0 padding-5px">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th class="text-muted">
+                  Degres
+                </th>
+                <th class="text-muted">
+                  Board/College
+                </th>
+                <th class="text-muted">
+                  CGPA/GRADE
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for e in edu %}
+              <tr class="text-muted">
+                <td>
+                  {{e.degree}}
+                </td>
+                <td>
+                  {{e.board}}
+                </td>
+                <td>
+                  {{e.grade_cgpa}}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="education-details">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <p class="text-muted font-size-18px">Professional Details</p>
+        <!-- <hr/> -->
+        <div class="card card-1 border-radius-0 padding-5px">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th class="text-muted">
+                  Previous Company Name
+                </th>
+                <th class="text-muted">
+                  Date of joining
+                </th>
+                <th class="text-muted">
+                  Date of leaving
+                </th>
+                <th class="text-muted">
+                  Notice Period
+                </th>
+                <th class="text-muted">
+                  Current Ctc
+                </th>
+                <th class="text-muted">
+                  Expected Ctc
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for e in prof %}
+              <tr class="text-muted">
+                <td>
+                  {{e.previous_compnay_name}}
+                </td>
+                <td>
+                  {{e.date_of_joining}}
+                </td>
+                <td>
+                  {{e.date_of_leaving}}
+                </td>
+                <td>
+                  {{e.notice_period_in_months}} month
+                </td>
+                <td>
+                  {{e.current_ctc}}
+                </td>
+                <td>
+                  {{e.expected_ctc  }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  body{
+    background-color:#fff;
+  }
+</style>
+{% endblock content %}

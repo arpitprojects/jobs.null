@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block content %}
+<section id="main_background" style="background : linear-gradient(165deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('{{STATIC_URL}}static/img/background.png');">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <!--ALl the front page goes here-->
+        <center>
+          <p class="head-img-text capitalize font-size-16px">Find the right company for you.</p>
+
+          </center>
+          <form class="form-now">
+            <div class="form-row">
+              <div class="input-ele offset-md-1 col-md-4 col-sm-12 col-xs-12">
+                <input type="text" class="form-control" placeholder="Category">
+              </div>
+              <div class="input-ele col-md-4 col-sm-12 col-xs-12">
+                <input type="text" class="form-control" placeholder="Location">
+              </div>
+              <div class="input-ele col-md-2 col-sm-12 col-xs-12 pull-left btn-main-page">
+              <button class="btn btn-primary btn-block btn-custom">Search</button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</section>
+<br /><br />
+<section id="job-listing">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <center>
+          <h2 class="font-size-26px">Top Job Picks for you</h2>
+        </center>
+        <hr />
+        <div class="float-left">
+          <div class="">
+            <label for="sort-by">Search Keywords</label>
+             <input type="email" class="form-control black-color" id="exampleInput1" placeholder="Search Keywords">
+             <!-- <span class="bmd-help">We'll never share your email with anyone else.</span> -->
+          </div>
+        </div>
+        <div class="float-right" style="width:10rem;">
+              <label for="sort-by">Sort By</label>
+              <select class="form-control" id="exampleFormControlSelect1">
+                <option>Relevance</option>
+                <option>Most Viewed</option>
+                <option>Most Applied</option>
+                <option>Recent</option>
+              </select>
+        </div>
+        <span class="clearfix"></span>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        {% if messages %}
+           {% for message in messages %}
+             <div class="alert alert-info">
+             <p>{{message}}</p>
+             </div>
+           {% endfor %}
+         {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3 padding-5px border-radius-0">
+      </div>
+      <div class="col-sm-9">
+        <!-- {{object_list}} -->
+        {% for o in object_list %}
+        <div class="card border-radius-0">
+          <div class="card-body">
+            <div class="float-left">
+              <a href="{{o.jobposting.website}}">
+                {% if not o.post_as_guest  %}
+                  <h4 class="card-title font-weight-200 font-family font-size-18px" style="font-size:22px;font-weight:400;">{{o.jobposting.name}}</h4>
+                  {% else %}
+                  <h4 class="card-title font-weight-200 font-family font-size-18px" style="font-size:16px;font-weight:400;"></h4>
+                {% endif %}
+              </a>
+
+              <h4 class="card-title font-weight-200 font-family font-size-16px" style="color:red;">{{o.job_title}}</h4>
+            </div>
+            <div class="float-right">
+                  <h4 class="card-title font-weight-200 font-family font-size-14px" style="color:red;">{{o.location}}</h4>
+            </div>
+            <span class="clearfix" style="clear:both;display:inline-block;"></span>
+
+            <br /><br /><br /><br /><br /><br /><br/>
+            <div class="float-left">
+            <h6 class="card-subtitle mb-2 text-muted capitalize">{{o.job_description | safe}}</h6>
+            <p class="card-text"></p>
+            <p class="text-muted capitalize">Validity - {{o.validity_in_months}} months.</p>
+            <br />
+            <p style="" class="capitalize text-muted">{{o.jobposting.line1 }} , {{ o.jobposting.line2}} , {{o.jobposting.city}} , {{o.jobposting.state}}</p>
+          </div>
+          <div class="float-right">
+              {% if user.profile_type == "employee" %}
+              <form action="" method="POST">
+                {% csrf_token %}
+                <a class="btn btn-info btn-custom" href="/apply/{{o.id}}" style="font-weight:500;">Easy apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
+              </form>
+              {% endif %}
+          </div>
+          <div class="float-right">
+              {% if not user.is_authenticated %}
+              <a class="btn btn-info btn-custom" href="/accounts/login/?next=/" style="font-weight:500;">Login to Apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
+              {% endif %}
+          </div>
+          <span class="clearfix"></span>
+          </div>
+        </div>
+        {% endfor %}
+        <div class="row">
+          <div class="col-sm-12">
+            <center>
+              {% if is_paginated %}
+                <ul class="pagination justify-content-center">
+                  {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q=">&laquo;</a></li>
+                  {% else %}
+
+                  {% endif %}
+                  {% for i in paginator.page_range %}
+                    {% if page_obj.number == i %}
+                      <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                      <li class="page-item"><a class="page-link" href="?page={{ i }}&q=">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q=">&raquo;</a></li>
+                  {% else %}
+
+                  {% endif %}
+                </ul>
+              {% endif %}
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

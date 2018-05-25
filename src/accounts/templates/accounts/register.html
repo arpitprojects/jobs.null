@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="login" style="margin-top:5%;">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 offset-sm-3">
+      <div class="card padding-15px border-radius-0">
+        {% if messages %}
+           {% for message in messages %}
+             <div class="alert alert-danger">
+             <p>{{message}}</p>
+             </div>
+           {% endfor %}
+         {% endif %}
+
+        <form action="" method="POST">
+          {% csrf_token %}
+          {{form.as_p}}
+
+          <br /><br />
+          <input type="submit" class="btn btn-success btn-block" value="Submit"/>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+{% endblock content %}

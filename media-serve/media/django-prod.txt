@@ -1,0 +1,8 @@
+1. Virtualenv
+2. Virtualenvwrapper
+3. Django
+4. Guicorn
+5. Nginix
+6. Supervisor
+
+

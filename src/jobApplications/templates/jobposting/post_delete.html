@@ -1,0 +1,18 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card" style="padding:20px;">
+        <center>
+          <form method="post">
+          {% csrf_token %}
+              <button class="btn btn-danger" style="font-weight:700;">Are you sure you want to delete?</button>
+          </form>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

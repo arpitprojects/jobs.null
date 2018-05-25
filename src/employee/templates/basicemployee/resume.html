@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container card card-3 border-radius-0">
+    <div class="row ">
+          <div class="col-sm-3">
+            <div class="card padding-15px border-radius-0" style="background-color:rgb(63,22 , 111);color:white;">
+              <a href="{% url  'employee:details' %}" style="color:white;">
+                Employee Details
+              </a>
+            </div>
+            <div class="card padding-15px border-radius-0" style="background-color:rgb(63,22 , 111);color:white;">
+              <a href="{% url  'employee:education-details' %}" style="color:white;">
+                Education Details
+              </a>
+            </div>
+            <div class="card padding-15px border-radius-0" style="background-color:rgb(63,22 , 111);color:white;">
+              <a href="{% url  'employee:professional-details' %}" style="color:white;">
+                Professional Settings
+              </a>
+            </div>
+            <div class="card padding-15px border-radius-0" style="background-color:rgb(63,22 , 111);color:white;">
+              <a href="{% url  'employee:resume' %}" style="color:white;">
+                Upload Resume
+              </a>
+            </div>
+          </div>
+          <div class="col-sm-9">
+            <div class=" padding-15px border-radius-0">
+              <br />
+              <form action="" class="card-min card padding-10px border-radius-0" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
+                <center>
+                    <button class="btn  btn-info">Submit</button>
+                </center>
+              </form>
+            </div>
+          </div>
+    </div>
+  </div>
+{% endblock content %}

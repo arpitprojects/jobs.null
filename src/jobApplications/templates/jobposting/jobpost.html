@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container card card-3 border-radius-0">
+    <div class="row ">
+          <div class="col-sm-3">
+
+          </div>
+          <div class="col-sm-9">
+            <div class=" padding-15px border-radius-0">
+              <br />
+              <form action="" class="card-min card padding-10px border-radius-0" method="POST" enctype="multipart/form-data"  style="border-left:0px solid grey;">
+                {% csrf_token %}
+                {{form.as_p}}
+                <center>
+                    <button class="btn btn-block btn-info">Submit</button>
+                </center>
+              </form>
+            </div>
+          </div>
+    </div>
+  </div>
+{% endblock content %}

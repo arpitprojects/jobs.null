@@ -1,0 +1,113 @@
+{% load static %}
+<nav class="navbar navbar-inverse navbar-expand-lg bg-dark" id="navbar-reset" role="navigation-demo">
+                             <div class="container">
+                               <!-- Brand and toggle get grouped for better mobile display -->
+                               <div class="navbar-translate">
+                                   <a class="navbar-brand" href="/presentation.html">Logo</a>
+                                   <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                                       <span class="navbar-toggler-icon"></span>
+                                       <span class="navbar-toggler-icon"></span>
+                                       <span class="navbar-toggler-icon"></span>
+                                   </button>
+                               </div>
+                           <!-- Collect the nav links, forms, and other content for toggling -->
+                               <div class="collapse navbar-collapse">
+                                   <ul class="navbar-nav ml-auto">
+                                       <li class="nav-item">
+                                           <a href="/" class="nav-link capitalize font-size-15px">
+                                               Home
+                                           </a>
+                                       </li>
+                                      {% if user.profile_type == "employee" %}
+                                       <li class="nav-item">
+                                         <a href="#pablo" class="nav-link capitalize font-size-15px">
+                                           Explore Jobs
+                                         </a>
+                                       </li>
+                                      {% endif %}
+                                      {% if user.profile_type == "employee" %}
+                                       <li class="nav-item">
+                                         <a href="/employee/profile/{{user.slug}}" class="nav-link capitalize font-size-15px">
+                                           View Resume
+                                         </a>
+                                       </li>
+                                      {% endif %}
+
+                                      {% if user.profile_type == "employer" %}
+                                      <li class="nav-item">
+                                        <a href="{% url 'jobApplications:job-post'  %}" class="nav-link capitalize font-size-15px">
+                                             Post A New Job
+                                        </a>
+                                       </li>
+                                       <li class="nav-item">
+                                         <a href="{% url 'jobApplications:previous-post'  %}" class="nav-link capitalize font-size-15px">
+                                            Posted Jobs
+                                         </a>
+                                        </li>
+                                      {% endif %}
+                                       {% if not user.is_authenticated %}
+                                       <li class="nav-item">
+                                           <a href="{% url 'accounts:register' %}" class="nav-link capitalize font-size-15px">
+                                             Sign Up
+                                           </a>
+                                       </li>
+                                       <li class="nav-item">
+                                           <a href="{% url  'accounts:login'  %}" class="nav-link capitalize font-size-15px">
+                                             Login
+                                           </a>
+                                       </li>
+                                       {% endif %}
+
+                                       <li class="nav-item">
+                                           <a href="/company/?q=" class="nav-link capitalize font-size-15px">
+                                             Companies
+                                           </a>
+                                       </li>
+                                       {% if user.profile_type == "employee" %}
+
+                                       <li class="dropdown av-item">
+                                           <a href="/employee/details/" class="btn btn-blue btn-raised btn-fab btn-round">
+                                               <i class="material-icons">settings</i>
+                                           </a>
+                                       </li>
+                                       {% endif %}
+                                       {% if user.is_authenticated %}
+                                       <!-- <li class="dropdown av-item">
+                                           <a href="#pablo" class="btn btn-rose btn-raised btn-fab btn-round" data-toggle="dropdown">
+                                               <i class="material-icons">notifications</i>
+                                           </a>
+                                           <div class="dropdown-menu dropdown-menu-right notification-dropdown">
+                                             <ul class="">
+                                               <li>
+                                                  <a href="#!" class="dropdown-item">
+
+                                                  </a>
+                                               </li>
+                                             </ul>
+                                           </div>
+                                       </li> -->
+                                       <!--After people get signup-->
+
+                                       <li class="dropdown nav-item">
+                                           <a href="#pablo" class="profile-photo dropdown-toggle nav-link" data-toggle="dropdown">
+                                               <div class="profile-photo-small">
+                                                   <img src="{% static 'img/faces/avatar.jpg' %}" alt="Circle Image" class="rounded-circle img-fluid">
+                                               </div>
+                                           </a>
+                                           <div class="dropdown-menu dropdown-menu-right">
+                                             {% if user.profile_type == "employee" %}
+                                               <a href="/employee/details/" class="dropdown-item" style="color:#024b68;"> <i class="material-icons">face</i> &nbsp; &nbsp; &nbsp;Hi {{user.first_name}}</a>
+                                               {% endif %}
+                                               {% if user.profile_type == "employer" %}
+                                                 <a href="/company/profile-settings/" class="dropdown-item" style="color:#024b68;"> <i class="material-icons">face</i> &nbsp; &nbsp; &nbsp;Hi {{user.first_name}}</a>
+                                                 {% endif %}
+                                               <a href="{% url  "accounts:logout" %}" class="dropdown-item" style="color:#024b68;"> <i class="material-icons">system_update</i> &nbsp; &nbsp; &nbsp;Logout</a>
+
+                                           </div>
+                                       </li>
+                                       {% endif %}
+                                   </ul>
+                               </div><!-- /.navbar-collapse -->
+                             </div><!-- /.container-->
+                           </nav>
+   <!--            end inverse navbar -->
