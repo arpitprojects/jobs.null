@@ -12,10 +12,10 @@
           <form class="form-now">
             <div class="form-row">
               <div class="input-ele offset-md-1 col-md-4 col-sm-12 col-xs-12">
-                <input type="text" class="form-control" placeholder="Category">
+                <input type="text" class="form-control" style="color:white;" placeholder="Category">
               </div>
               <div class="input-ele col-md-4 col-sm-12 col-xs-12">
-                <input type="text" class="form-control" placeholder="Location">
+                <input type="text" class="form-control" style="color:white;" placeholder="Location">
               </div>
               <div class="input-ele col-md-2 col-sm-12 col-xs-12 pull-left btn-main-page">
               <button class="btn btn-primary btn-block btn-custom">Search</button>
@@ -36,11 +36,13 @@
         </center>
         <hr />
         <div class="float-left">
-          <div class="">
-            <label for="sort-by">Search Keywords</label>
-             <input type="email" class="form-control black-color" id="exampleInput1" placeholder="Search Keywords">
-             <!-- <span class="bmd-help">We'll never share your email with anyone else.</span> -->
-          </div>
+          <form method="GET" class="input-group">
+           <input type="text" class="form-control" name="q" placeholder="Search Keywords">
+           <span class="input-group-btn">
+                <button class="btn btn-info" style="position:relative;top:-10px;">Search</button>
+           </span>
+        </form>
+        <span class=""><a href="/">Clear keywords</a></span>
         </div>
         <div class="float-right" style="width:10rem;">
               <label for="sort-by">Sort By</label>
@@ -62,7 +64,10 @@
       <div class="col-sm-12">
         {% if messages %}
            {% for message in messages %}
-             <div class="alert alert-info">
+             <div class="alert alert-info alert-dismissible fade show" role="alert">
+               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
              <p>{{message}}</p>
              </div>
            {% endfor %}
@@ -145,6 +150,7 @@
             </center>
           </div>
         </div>
+        <br /><br />
       </div>
     </div>
   </div>

@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^company/' ,  include('company.urls'  , namespace="company" )),
     url(r'^employee/' ,  include('employee.urls'  , namespace="employee" )),
     url(r'^jobs/' ,  include('jobApplications.urls'  , namespace="jobApplications")),
-    url(r'^tinymce/', include('tinymce.urls'))
+    url(r'^tinymce/', include('tinymce.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

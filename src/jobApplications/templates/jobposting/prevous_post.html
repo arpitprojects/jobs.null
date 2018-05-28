@@ -20,9 +20,6 @@
                 {% for o in object_list %}
                 <div class="card border-radius-0" style="border-left:5px solid grey;">
                   <div class="card-body">
-
-                    <h4 class="card-title font-weight-200 font-family font-size-18px">{{o.jobposting.name}}</h4>
-
                     <h4 class="card-title font-weight-200 font-family font-size-16px">{{o.job_title}}</h4>
 
                     <h6 class="card-subtitle mb-2 text-muted capitalize">{{o.job_description | safe}}</h6>
@@ -31,8 +28,14 @@
 
                     <p class="card-text text-muted">Location : {{o.location}}</p>
                     <br />
-                    <a href="update/{{o.id}}" class="card-link btn btn-warning">Update</a>
+                    <div class="float-left">
+                      <a href="update/{{o.id}}" class="card-link btn btn-warning">Update</a>
                       <a href="delete/{{o.id}}" class="card-link btn btn-danger">Delete</a>
+                    </div>
+                    <div class="float-right">
+                      <a href="/jobs/view-applications/{{o.id}}" class="card-link btn btn-info">View Application</a>
+                    </div>
+                    <span class="clearfix"></span>
                     </div>
                   </div>
                 {% endfor %}

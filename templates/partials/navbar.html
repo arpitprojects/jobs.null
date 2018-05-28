@@ -18,13 +18,13 @@
                                                Home
                                            </a>
                                        </li>
-                                      {% if user.profile_type == "employee" %}
+
                                        <li class="nav-item">
-                                         <a href="#pablo" class="nav-link capitalize font-size-15px">
+                                         <a href="/jobs/" class="nav-link capitalize font-size-15px">
                                            Explore Jobs
                                          </a>
                                        </li>
-                                      {% endif %}
+
                                       {% if user.profile_type == "employee" %}
                                        <li class="nav-item">
                                          <a href="/employee/profile/{{user.slug}}" class="nav-link capitalize font-size-15px">
@@ -64,12 +64,11 @@
                                            </a>
                                        </li>
                                        {% if user.profile_type == "employee" %}
-
-                                       <li class="dropdown av-item">
-                                           <a href="/employee/details/" class="btn btn-blue btn-raised btn-fab btn-round">
-                                               <i class="material-icons">settings</i>
-                                           </a>
-                                       </li>
+                                         <li class="dropdown av-item">
+                                             <a href="/employee/details/" class="btn btn-blue btn-raised btn-fab btn-round">
+                                                 <i class="material-icons">settings</i>
+                                             </a>
+                                         </li>
                                        {% endif %}
                                        {% if user.is_authenticated %}
                                        <!-- <li class="dropdown av-item">

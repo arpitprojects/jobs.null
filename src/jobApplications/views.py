@@ -11,7 +11,36 @@ from itertools import chain
 from accounts.models import CommonUserProfile
 from company.models import CompanyProfile
 from django.http import Http404
+from .models import JobApply
+from django.urls import reverse_lazy
 # Create your views here.
+
+class ExploreJobs(ListView):
+    template_name = "jobposting/index.html"
+    queryset = JobPostingModel.objects.filter(is_active = True).order_by('-id')
+    paginate_by = 10;
+    count = 0;
+    def get_context_data(self , *args, **kwargs):
+        context = super().get_context_data(*args , **kwargs)
+        context['count'] = self.count;
+        context['query'] = self.request.GET.get('q')
+        return context
+
+    def get_queryset(self):
+        request = self.request;
+        query = request.GET.get("q" , None)
+
+        if query is not None:
+            company_results = JobPostingModel.objects.search(query)
+            queryset_chain = chain(
+                company_results
+            )
+            qs = sorted(queryset_chain , key = lambda instance : instance.pk , reverse = True)
+            self.count= len(qs);
+            return qs
+
+        return JobPostingModel.objects.filter(is_active = True).order_by('-id')
+
 
 @method_decorator([employer_required], name='dispatch')
 class JobPostingView(LoginRequiredMixin , CreateView):
@@ -60,3 +89,36 @@ class PreviousPostingsDeleteView(LoginRequiredMixin , DeleteView):
     def get_queryset(self):
         qs = super(PreviousPostingsDeleteView, self).get_queryset()
         return qs.filter(jobpostinguser=self.request.user.id)
+
+
+@method_decorator([employer_required] , name="dispatch")
+class ViewApplicationView(LoginRequiredMixin , ListView):
+    template_name = "jobposting/view-applications.html"
+    paginate_by = 5
+
+    def get_queryset(self , *args , **kwargs):
+        pk = self.kwargs['pk']
+        print(pk);
+        queryset = JobApply.objects.filter(job_app = pk);
+        return queryset;
+
+@method_decorator([employer_required] , name="dispatch")
+class ViewApplicationDeleteView(LoginRequiredMixin , DeleteView):
+    model = JobApply;
+    template_name = "jobposting/view-application-delete.html"
+    success_url = "/jobs/view-applications/"
+
+    def get_queryset(self):
+        qs = super(ViewApplicationDeleteView, self).get_queryset()
+        return qs.filter(id=self.kwargs['pk'])
+
+@method_decorator([employer_required] , name="dispatch")
+class ViewApplicationUpdateView(LoginRequiredMixin , UpdateView):
+    model = JobApply
+    template_name = "jobposting/view-applications-update.html"
+    fields = ['status' , 'update_comment']
+    success_url = "/jobs/view-applications/"
+
+    def get_queryset(self , *args , **kwargs):
+        qs = super(ViewApplicationUpdateView, self).get_queryset();
+        return qs.filter(id=self.kwargs['pk'])
