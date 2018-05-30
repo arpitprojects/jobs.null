@@ -12,6 +12,7 @@ from itertools import chain
 # Create your views here.
 # Create your views here.
 
+
 @method_decorator([employee_required], name='dispatch')
 class ProfileSettingsView(LoginRequiredMixin, UpdateView):
     form_class = EmployeeDetailsForm
@@ -26,6 +27,7 @@ class ProfileSettingsView(LoginRequiredMixin, UpdateView):
         print(pk);
         obj, created = BasicEmployeeProfile.objects.get_or_create(employeeprofile = pk)
         return obj
+
 
 
 @method_decorator([employee_required], name='dispatch')

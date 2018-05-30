@@ -18,7 +18,7 @@ class JobPostingModelForm(forms.ModelForm):
 
     class Meta:
         model = JobPostingModel
-        fields = ['job_title' , 'job_description' , 'validity_in_months' , 'post_as_guest' , 'location']
+        fields = ['job_title' , 'job_description' , 'notice_period' , 'location']
 
 
     def __init__(self, *args, **kwargs):

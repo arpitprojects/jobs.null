@@ -21,7 +21,7 @@ class CompanyManager(models.Manager):
 
 class CompanyProfile(models.Model):
     commonuserprofile = models.OneToOneField(CommonUserProfile , on_delete=models.CASCADE , primary_key = True)
-    name = models.CharField(max_length =254 , primary_key = True)
+    name = models.CharField(max_length =254)
     logo = models.ImageField(upload_to = 'media')
     website = models.URLField(max_length= 200)
     line1 = models.CharField(max_length = 100)
@@ -36,4 +36,4 @@ class CompanyProfile(models.Model):
     objects = CompanyManager()
 
     def __str__(self):
-        return self.name;
+        return self.name + " "+ self.website;

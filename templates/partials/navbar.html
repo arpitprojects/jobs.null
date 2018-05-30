@@ -70,6 +70,13 @@
                                              </a>
                                          </li>
                                        {% endif %}
+                                       {% if user.profile_type == "employer" %}
+                                         <li class="dropdown av-item red">
+                                             <a href="/company/profile-settings/"  class="red btn btn-blue btn-raised btn-fab btn-round">
+                                                 <i class="material-icons">settings</i>
+                                             </a>
+                                         </li>
+                                       {% endif %}
                                        {% if user.is_authenticated %}
                                        <!-- <li class="dropdown av-item">
                                            <a href="#pablo" class="btn btn-rose btn-raised btn-fab btn-round" data-toggle="dropdown">

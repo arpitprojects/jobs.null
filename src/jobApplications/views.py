@@ -49,13 +49,16 @@ class JobPostingView(LoginRequiredMixin , CreateView):
     success_url = '/'
     def form_valid(self, form):
         form.instance.jobpostinguser = self.request.user
-        form.instance.jobposting = CompanyProfile.objects.get(pk = self.request.user.id)
+        form.instance.jobposting = CompanyProfile.objects.get(pk = self.request.user)
         return super().form_valid(form);
 
-    # def get_object(self, queryset=None):
-    #     # pk = self.request.user.id;
-    #     # print(pk);
-    #     created = JobPostingModel.objects.create()
+    # 
+    # def get_context_data(self , **kwargs):
+    #     # print(self.request.user)
+    #     context = super(JobPostingView , self).get_context_data(**kwargs)
+    #     context['condition'] = CompanyProfile.objects.filter(pk = self.request.user).values('name')
+    #     print(context);
+    #     return context
 
 @method_decorator([employer_required] , name="dispatch")
 class PreviousPostingsView(LoginRequiredMixin , ListView):
@@ -64,7 +67,6 @@ class PreviousPostingsView(LoginRequiredMixin , ListView):
 
     def get_queryset(self):
         pk = self.request.user
-        # print(pk);
         queryset = JobPostingModel.objects.filter(jobpostinguser = pk);
         return queryset;
 
@@ -74,8 +76,8 @@ class PreviousPostingsUpdateView(LoginRequiredMixin , UpdateView):
     model = JobPostingModel
     form_class = JobPostingModelForm
     template_name = "jobposting/jobpostingupdate.html"
-    # fields = ['job_title' , 'job_description' , 'validity_in_months' , 'post_as_guest',  'location']
     success_url = "/jobs/previous-posts"
+
     def get_queryset(self):
         qs = super(PreviousPostingsUpdateView, self).get_queryset();
         return qs.filter(jobpostinguser=self.request.user.id)
@@ -98,7 +100,6 @@ class ViewApplicationView(LoginRequiredMixin , ListView):
 
     def get_queryset(self , *args , **kwargs):
         pk = self.kwargs['pk']
-        print(pk);
         queryset = JobApply.objects.filter(job_app = pk);
         return queryset;
 

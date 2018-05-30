@@ -10,7 +10,9 @@ from jobApplications.models import JobPostingModel ,JobApply
 from company.models import CompanyProfile
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
 class HomeView(ListView):
     template_name = "home/index.html"
     queryset = JobPostingModel.objects.filter(is_active = True).order_by('-id')
@@ -41,12 +43,58 @@ class HomeView(ListView):
 @method_decorator([employee_required] , name="dispatch")
 class ApplyView(SuccessMessageMixin , LoginRequiredMixin , View):
     # model = JobApply
-    # fields = '__all__'
+    # fields = '__all__'pp
     # template_name = "jobposting/jobapply_form.html"
     def get(self , request , *args , **kwargs):
-        val = self.request.user
+        val = self.request.user;
+
+        employer = JobPostingModel.objects.get(pk = self.kwargs['pk']);
+
+
+        # End of the email to the employee as well as employer
         jobapply = JobApply(employee = val ,job_app = (JobPostingModel.objects.get(pk = self.kwargs['pk'])))
         jobapply.save();
+
+        #For employee
+        subject_c = 'Your application for '+employer.job_title+' at '+employer.jobposting.name+" is submitted"
+
+        from_e = settings.EMAIL_HOST_USER
+
+        to_c = val.email
+
+        message_c = render_to_string('employee_message.html', {
+            'company_name': employer.jobposting.name,
+            'job_title': employer.job_title,
+        })
+
+
+        c = send_mail(
+            subject_c,
+            message_c,
+            from_e,
+            [to_c],
+            html_message=message_c,
+        )
+
+        # For employers
+
+        subject_e = val.first_name+" applied for "+employer.job_title;
+
+        message_e = render_to_string('employer_message.html', {
+            'name': val.first_name + " "+val.last_name,
+            'job_title': employer.job_title,
+            'email' : val.email
+        })
+
+        to_e = employer.jobpostinguser.email;
+
+        c = send_mail(
+            subject_e,
+            message_e,
+            from_e,
+            [to_e],
+            html_message=message_e,
+        )
         messages.add_message(request, messages.ERROR, 'Application Applied Sucessfully!')
         return HttpResponseRedirect('/');
     # def form_valid(self, form):

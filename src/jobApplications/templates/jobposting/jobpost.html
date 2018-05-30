@@ -8,13 +8,23 @@
           <div class="col-sm-9">
             <div class=" padding-15px border-radius-0">
               <br />
-              <form action="" class="card-min card padding-10px border-radius-0" method="POST" enctype="multipart/form-data"  style="border-left:0px solid grey;">
-                {% csrf_token %}
-                {{form.as_p}}
-                <center>
-                    <button class="btn btn-block btn-info">Submit</button>
-                </center>
-              </form>
+              <div>
+
+                    <form action="" class="card-min card padding-10px border-radius-0" method="POST" enctype="multipart/form-data"  style="border-left:0px solid grey;">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <center>
+                            <button class="btn btn-block btn-info">Submit</button>
+                        </center>
+                      </form>
+
+                      <!-- <div class="alert alert-danger" role="alert">
+                        <center>
+                            <p style="font-size:18px;" class="">You need to fill the company details to post the jobs </p> <br /><a class="btn btn-info" href="/company/profile-settings/">Click here</a>
+                        </center>
+                      </div> -->
+
+              </div>
             </div>
           </div>
     </div>

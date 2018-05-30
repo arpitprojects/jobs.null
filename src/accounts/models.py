@@ -32,7 +32,7 @@ class CommonUserProfile(AbstractBaseUser , PermissionsMixin):
     slug = models.SlugField(max_length = 255 , unique = True)
     first_name = models.CharField(max_length = 255)
     last_name = models.CharField(max_length = 255)
-    is_active = models.BooleanField(default = True)
+    is_active = models.BooleanField(default = False)
     is_staff = models.BooleanField(default = True)
     profile_type = models.CharField(max_length=8 , choices=PROFILE_CHOCES , default="employee" )
     #default is taking as employee

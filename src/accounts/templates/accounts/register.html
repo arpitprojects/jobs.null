@@ -19,11 +19,27 @@
           {{form.as_p}}
 
           <br /><br />
-          <input type="submit" class="btn btn-success btn-block" value="Submit"/>
+          <input type="submit" id="register_btn" class="btn btn-success btn-block" value="Submit"/>
         </form>
       </div>
     </div>
   </div>
 </div>
 </section>
+<script>
+  $('#id_profile_type').change(function(){
+    if(this.value == "employer"){
+      var arr = ['gmail.com' , 'yahoo.co.in' , 'yahoo.com' , 'rediffmail.com' , 'vsnl.co.in' , 'rediffmail.co.in' , 'hotmail.com'];
+      var email = $('#id_email').val();
+      var domain = email.substring(email.lastIndexOf("@") +1);
+      domain = domain.trim();
+      if(arr.includes(domain)){
+        $.mdtoast('Employer needs a buisness email!'); 
+        return false;
+      }else{
+        console.log('Sucessfully Validated!');
+      }
+    }
+  });
+</script>
 {% endblock content %}

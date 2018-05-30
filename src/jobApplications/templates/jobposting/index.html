@@ -5,7 +5,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
-        
+
         <hr />
         <div class="float-left">
           <form method="GET" class="input-group">
@@ -56,11 +56,7 @@
           <div class="card-body">
             <div class="float-left">
               <a href="{{o.jobposting.website}}">
-                {% if not o.post_as_guest  %}
                   <h4 class="card-title font-weight-200 font-family font-size-18px" style="font-size:22px;font-weight:400;">{{o.jobposting.name}}</h4>
-                  {% else %}
-                  <h4 class="card-title font-weight-200 font-family font-size-18px" style="font-size:16px;font-weight:400;"></h4>
-                {% endif %}
               </a>
 
               <h4 class="card-title font-weight-200 font-family font-size-16px" style="color:red;">{{o.job_title}}</h4>
@@ -74,7 +70,7 @@
             <div class="float-left">
             <h6 class="card-subtitle mb-2 text-muted capitalize">{{o.job_description | safe}}</h6>
             <p class="card-text"></p>
-            <p class="text-muted capitalize">Validity - {{o.validity_in_months}} months.</p>
+            <p class="text-muted capitalize">Notice - {{o.notice_period}} months.</p>
             <br />
             <p style="" class="capitalize text-muted">{{o.jobposting.line1 }} , {{ o.jobposting.line2}} , {{o.jobposting.city}} , {{o.jobposting.state}}</p>
           </div>
