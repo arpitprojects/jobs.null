@@ -8,13 +8,15 @@
 
         <hr />
         <div class="float-left">
-          <form method="GET" class="input-group">
+          <form method="GET" class="input-group" action="/jobs/?job_title=&location=&q=">
            <input type="text" class="form-control" name="q" placeholder="Search Keywords">
            <span class="input-group-btn">
-                <button class="btn btn-info" style="position:relative;top:-10px;">Search</button>
+                <input type="hidden" name="job_title"/>
+                <input type="hidden" name="location"/>
+                <input type="submit" class="btn btn-info" style="position:relative;top:-10px;" value="Search">
            </span>
         </form>
-        <span class=""><a href="/">Clear keywords</a></span>
+        <span class=""><a href="/jobs/?job_title=&title=&location=">Clear keywords</a></span>
         </div>
         <div class="float-right" style="width:10rem;">
               <label for="sort-by">Sort By</label>

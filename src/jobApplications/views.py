@@ -24,17 +24,45 @@ class ExploreJobs(ListView):
         context = super().get_context_data(*args , **kwargs)
         context['count'] = self.count;
         context['query'] = self.request.GET.get('q')
+        context['job_title'] = self.request.GET.get('job_title')
+        context['location'] = self.request.GET.get('location')
         return context
 
-    def get_queryset(self):
+    def get_queryset(self , *args , **kwargs):
         request = self.request;
         query = request.GET.get("q" , None)
-
+        job_title = request.GET.get("job_title" , None);
+        location = request.GET.get("location" , None);
+        print('Flow :'+job_title);
         if query is not None:
+            # print('Flow i hope we are not here');
             company_results = JobPostingModel.objects.search(query)
             queryset_chain = chain(
                 company_results
             )
+
+            qs = sorted(queryset_chain , key = lambda instance : instance.pk , reverse = True)
+            self.count= len(qs);
+            return qs
+
+        if job_title is not None and location is not None:
+            # print('We must come here :'+job_title);
+            company_results = JobPostingModel.objects.search_keywords(job_title , location)
+            queryset_chain = chain(
+                company_results
+            )
+
+            qs = sorted(queryset_chain , key = lambda instance : instance.pk , reverse = True)
+            self.count= len(qs);
+            return qs
+            
+        if job_title is not None or location is not None:
+            # print('we shall nor play this. :'+job_title);
+            company_results = JobPostingModel.objects.search_keywords(job_title , location)
+            queryset_chain = chain(
+                company_results
+            )
+
             qs = sorted(queryset_chain , key = lambda instance : instance.pk , reverse = True)
             self.count= len(qs);
             return qs
@@ -52,7 +80,7 @@ class JobPostingView(LoginRequiredMixin , CreateView):
         form.instance.jobposting = CompanyProfile.objects.get(pk = self.request.user)
         return super().form_valid(form);
 
-    # 
+    #
     # def get_context_data(self , **kwargs):
     #     # print(self.request.user)
     #     context = super(JobPostingView , self).get_context_data(**kwargs)

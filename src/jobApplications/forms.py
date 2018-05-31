@@ -16,13 +16,20 @@ class JobPostingModelForm(forms.ModelForm):
         )
     )
 
+    def clean_job_title(self):
+        return self.cleaned_data['job_title'].capitalize()
+
+    def clean_location(self):
+        return self.cleaned_data['location'].capitalize()
+
     class Meta:
         model = JobPostingModel
         fields = ['job_title' , 'job_description' , 'notice_period' , 'location']
 
 
+
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(JobPostingModelForm , self).__init__(*args, **kwargs)
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update({
                 'class': 'form-control'

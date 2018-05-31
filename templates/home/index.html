@@ -9,16 +9,16 @@
           <p class="head-img-text capitalize font-size-16px">Find the right company for you.</p>
 
           </center>
-          <form class="form-now">
+          <form class="form-now" method="GET" action="/jobs/">
             <div class="form-row">
               <div class="input-ele offset-md-1 col-md-4 col-sm-12 col-xs-12">
-                <input type="text" class="form-control" style="color:white;" placeholder="Category">
+                <input type="text" class="form-control" style="color:white !important;font-weight:600!important;" name="job_title" id="txtSearch" placeholder="Job Title">
               </div>
               <div class="input-ele col-md-4 col-sm-12 col-xs-12">
-                <input type="text" class="form-control" style="color:white;" placeholder="Location">
+                <input type="text" class="form-control" style="color:white !important;font-weight:600!important;" name="location" id="location" placeholder="Location">
               </div>
               <div class="input-ele col-md-2 col-sm-12 col-xs-12 pull-left btn-main-page">
-              <button class="btn btn-primary btn-block btn-custom">Search</button>
+              <input type="submit" class="btn btn-primary btn-block btn-custom" value="Search">
               </div>
             </div>
           </form>
@@ -26,6 +26,49 @@
     </div>
   </div>
 </section>
+<style>
+.ui-menu .ui-menu-item a{
+  font-family: 'Roboto' , sans-serif !important;
+  font-size: 15px !important;
+  font-weight:200 !important;
+  color:#024b68 !important;
+  background-color: #fff !important;
+}
+</style>
+<script>
+$(function() {
+  $("#txtSearch").autocomplete({
+      source: "/api/get_job_title/",
+      select: function (event, ui) { //item selected
+        AutoCompleteSelectHandler(event, ui)
+      },
+      minLength: 2,
+    });
+  });
+
+  function AutoCompleteSelectHandler(event, ui)
+  {
+    var selectedObj = ui.item;
+  }
+
+</script>
+<script>
+$(function() {
+  $("#location").autocomplete({
+      source: "/api/location/",
+      select: function (event, ui) { //item selected
+        AutoCompleteSelectHandler(event, ui)
+      },
+      minLength: 2,
+    });
+  });
+
+  function AutoCompleteSelectHandler(event, ui)
+  {
+    var selectedObj = ui.item;
+  }
+
+</script>
 <br /><br />
 <section id="job-listing">
   <div class="container">
@@ -76,6 +119,7 @@
     </div>
     <div class="row">
       <div class="col-sm-3 padding-5px border-radius-0">
+
       </div>
       <div class="col-sm-9">
         <!-- {{object_list}} -->

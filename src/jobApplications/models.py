@@ -28,6 +28,25 @@ class JobPostingManager(models.Manager):
             qs = qs.filter(or_lookup).distinct()
         return qs
 
+    def search_keywords(self , job_title = None , location = None):
+        qs = self.get_queryset();
+        # print('We shoulf come herfe'+location+job_title);
+        if job_title is not None and location is not None:
+            print('Are wee here');
+            or_lookup = (Q(job_title__icontains = job_title)
+            & Q(location__icontains = location)
+            )
+            qs = qs.filter(or_lookup).distinct()
+        return qs
+
+        if job_title is not None or location is not None:
+            # print('i am not here');
+            or_lookup = (Q(job_title__icontains = job_title) |
+                        Q(location__icontains = location)
+                    )
+            qs = qs.filter(or_lookup).distinct()
+
+        return qs
 
 
 class JobPostingModel(models.Model):

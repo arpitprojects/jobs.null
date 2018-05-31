@@ -13,6 +13,44 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
+import json
+from .forms import ContactModelForm
+
+def location(request):
+  if request.is_ajax():
+    q = request.GET.get('term', '')
+    places = JobPostingModel.objects.filter(location__icontains=q).distinct()
+    results = []
+
+    for pl in places:
+      place_json = {}
+      place_json = pl.location
+      results.append(place_json)
+
+    results = list(set(results)); #inside for inside if
+    data = json.dumps(results)
+  else:
+    data = 'fail'
+  mimetype = 'application/json'
+  return HttpResponse(data, mimetype)
+
+def get_job_title(request):
+  if request.is_ajax():
+    q = request.GET.get('term', '')
+    places = JobPostingModel.objects.filter(job_title__icontains=q).distinct()
+    results = []
+    for pl in places:
+      place_json = {}
+      place_json = pl.job_title
+      results.append(place_json)
+
+    results = list(set(results));
+    data = json.dumps(results)
+  else:
+    data = 'fail'
+  mimetype = 'application/json'
+  return HttpResponse(data, mimetype)
+
 class HomeView(ListView):
     template_name = "home/index.html"
     queryset = JobPostingModel.objects.filter(is_active = True).order_by('-id')
@@ -102,3 +140,27 @@ class ApplyView(SuccessMessageMixin , LoginRequiredMixin , View):
     #     form.instance.employer = CompanyProfile.objects.get(pk =self.kwargs['string'])
     #     form.instance.job_app = JobPostingModel.objects.get(pk = self.kwargs['pk'])
     #     return super().form_valid(form);
+
+
+class AboutView(TemplateView):
+    template_name="home/about.html"
+
+
+class PrivacyView(TemplateView):
+    template_name="home/privacy.html"
+
+
+class PressView(TemplateView):
+    template_name="home/press.html"
+
+
+class FAQView(TemplateView):
+    template_name="home/faq.html"
+
+class TermsView(TemplateView):
+    template_name="home/terms.html"
+
+class ContactView(CreateView):
+    template_name = "home/contact.html"
+    form_class = ContactModelForm;
+    success_url = "/"

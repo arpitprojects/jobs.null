@@ -37,3 +37,5 @@ class CompanyProfile(models.Model):
 
     def __str__(self):
         return self.name + " "+ self.website;
+    # def __str__(self):
+    #     return "Arpit";

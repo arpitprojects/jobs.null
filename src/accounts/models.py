@@ -70,3 +70,17 @@ class CommonUserProfile(AbstractBaseUser , PermissionsMixin):
             self.slug = slugify(uuid.uuid4().hex)
 
         super(CommonUserProfile, self).save(*args, **kwargs)
+
+
+
+class ContactModel(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=100)
+    description = models.TextField()
+
+
+    def __str__(self):
+        return self.email+ " "+ self.subject;
+
+    
