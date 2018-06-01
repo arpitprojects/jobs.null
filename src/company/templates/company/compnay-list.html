@@ -28,7 +28,9 @@
 
             <a href="{{o.website}}" target="_blank"><div class="card card-1 border-radius-0">
             <div id="img-container">
-              {% if o.image %}
+
+
+              {% if o.logo %}
                 <img src="{{MEDIA_URL}}{{o.logo.url}}" id="img-logo" class="imag img-responsive"/>
                 {% else %}
                   <img src="http://placehold.it/200x200" id="img-logo" class="imag img-responsive"/>

@@ -13,6 +13,7 @@ from company.models import CompanyProfile
 from django.http import Http404
 from .models import JobApply
 from django.urls import reverse_lazy
+from django.contrib import messages
 # Create your views here.
 
 class ExploreJobs(ListView):
@@ -36,7 +37,7 @@ class ExploreJobs(ListView):
         print('Flow :'+job_title);
         if query is not None:
             # print('Flow i hope we are not here');
-            company_results = JobPostingModel.objects.search(query)
+            company_results = JobPostingModel.objects.search(query).filter(is_active = True)
             queryset_chain = chain(
                 company_results
             )
@@ -47,7 +48,7 @@ class ExploreJobs(ListView):
 
         if job_title is not None and location is not None:
             # print('We must come here :'+job_title);
-            company_results = JobPostingModel.objects.search_keywords(job_title , location)
+            company_results = JobPostingModel.objects.search_keywords(job_title , location).filter(is_active = True)
             queryset_chain = chain(
                 company_results
             )
@@ -55,10 +56,10 @@ class ExploreJobs(ListView):
             qs = sorted(queryset_chain , key = lambda instance : instance.pk , reverse = True)
             self.count= len(qs);
             return qs
-            
+
         if job_title is not None or location is not None:
             # print('we shall nor play this. :'+job_title);
-            company_results = JobPostingModel.objects.search_keywords(job_title , location)
+            company_results = JobPostingModel.objects.search_keywords(job_title , location).filter(is_active = True)
             queryset_chain = chain(
                 company_results
             )

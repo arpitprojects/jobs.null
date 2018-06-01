@@ -10,11 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '43dzwnuv$yq=)j)isd71+=j$pb#t3gk2r9&*g!lga$(w^=q=i+'
-
-
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

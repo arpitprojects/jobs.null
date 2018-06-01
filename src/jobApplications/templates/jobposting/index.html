@@ -1,23 +1,79 @@
 {% extends 'base.html' %}
 {% block content %}
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
 
+                <!--ALl the front page goes here-->
+
+                  <form class="form-now card border-radius-0" style="margin-top:4%;padding:20px;" method="GET" action="/jobs/">
+                    <div class="form-row">
+                      <div class="input-ele offset-md-1 col-md-4 col-sm-12 col-xs-12">
+                        <input type="text" class="form-control" style="color:#000 !important;font-weight:400!important;" name="job_title" id="txtSearch" placeholder="Job Title">
+                      </div>
+                      <div class="input-ele col-md-4 col-sm-12 col-xs-12">
+                        <input type="text" class="form-control" style="color:#000 !important;font-weight:400!important;" name="location" id="location" placeholder="Location">
+                      </div>
+                      <!-- <input type="hidden"  name="q"/> -->
+                      <div class="input-ele col-md-2 col-sm-12 col-xs-12 pull-left btn-main-page">
+                      <input type="submit" class="btn btn-primary btn-block btn-custom" value="Search">
+                      </div>
+                    </div>
+                  </form>
+
+        <style>
+        .ui-menu .ui-menu-item a{
+          font-family: 'Roboto' , sans-serif !important;
+          font-size: 15px !important;
+          font-weight:200 !important;
+          color:#024b68 !important;
+          background-color: #fff !important;
+        }
+        </style>
+        <script>
+        $(function() {
+          $("#txtSearch").autocomplete({
+              source: "/api/get_job_title/",
+              select: function (event, ui) { //item selected
+                AutoCompleteSelectHandler(event, ui)
+              },
+              minLength: 2,
+            });
+          });
+
+          function AutoCompleteSelectHandler(event, ui)
+          {
+            var selectedObj = ui.item;
+          }
+
+        </script>
+        <script>
+        $(function() {
+          $("#location").autocomplete({
+              source: "/api/location/",
+              select: function (event, ui) { //item selected
+                AutoCompleteSelectHandler(event, ui)
+              },
+              minLength: 2,
+            });
+          });
+
+          function AutoCompleteSelectHandler(event, ui)
+          {
+            var selectedObj = ui.item;
+          }
+
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
 <section id="job-listing">
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
 
-        <hr />
-        <div class="float-left">
-          <form method="GET" class="input-group" action="/jobs/?job_title=&location=&q=">
-           <input type="text" class="form-control" name="q" placeholder="Search Keywords">
-           <span class="input-group-btn">
-                <input type="hidden" name="job_title"/>
-                <input type="hidden" name="location"/>
-                <input type="submit" class="btn btn-info" style="position:relative;top:-10px;" value="Search">
-           </span>
-        </form>
-        <span class=""><a href="/jobs/?job_title=&title=&location=">Clear keywords</a></span>
-        </div>
         <div class="float-right" style="width:10rem;">
               <label for="sort-by">Sort By</label>
               <select class="form-control" id="exampleFormControlSelect1">
@@ -49,50 +105,96 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-3 padding-5px border-radius-0">
+      <div class="col-sm-3 card border-radius-0 padding-15px border-radius-0" style="max-height:100px;">
+        <div class="float-left">
+          <form method="GET" class="input-group" action="/jobs/?job_title=&location=&q=">
+           <input type="text" class="form-control" name="q" placeholder="Search Keywords">
+           <span class="input-group-btn">
+                <input type="hidden" name="job_title"/>
+                <input type="hidden" name="location"/>
+                <input type="submit" class="btn btn-info" style="position:relative;top:-10px;" value="Search">
+           </span>
+        </form>
+        <span class=""><a href="/jobs/?job_title=&title=&location=">Clear keywords</a></span>
+        </div>
       </div>
       <div class="col-sm-9">
         <!-- {{object_list}} -->
+        {% if object_list %}
         {% for o in object_list %}
-        <div class="card border-radius-0">
-          <div class="card-body">
+        <div class="card border-radius-0" style="border-radius:0 !important;height:140px;overflow:hidden;">
+          <div class="border-radius-0" style="">
+            <!--            Pick from here -->
             <div class="float-left">
-              <a href="{{o.jobposting.website}}">
-                  <h4 class="card-title font-weight-200 font-family font-size-18px" style="font-size:22px;font-weight:400;">{{o.jobposting.name}}</h4>
-              </a>
-
-              <h4 class="card-title font-weight-200 font-family font-size-16px" style="color:red;">{{o.job_title}}</h4>
-            </div>
-            <div class="float-right">
-                  <h4 class="card-title font-weight-200 font-family font-size-14px" style="color:red;">{{o.location}}</h4>
-            </div>
-            <span class="clearfix" style="clear:both;display:inline-block;"></span>
-
-            <br /><br /><br /><br /><br /><br /><br/>
-            <div class="float-left">
-            <h6 class="card-subtitle mb-2 text-muted capitalize">{{o.job_description | safe}}</h6>
-            <p class="card-text"></p>
-            <p class="text-muted capitalize">Notice - {{o.notice_period}} months.</p>
-            <br />
-            <p style="" class="capitalize text-muted">{{o.jobposting.line1 }} , {{ o.jobposting.line2}} , {{o.jobposting.city}} , {{o.jobposting.state}}</p>
-          </div>
-          <div class="float-right">
-              {% if user.profile_type == "employee" %}
-              <form action="" method="POST">
-                {% csrf_token %}
-                <a class="btn btn-info btn-custom" href="/apply/{{o.id}}" style="font-weight:500;">Easy apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
-              </form>
+              {% if o.jobposting.logo %}
+                <img src="{{MEDIA_URL}}{{o.jobposting.logo.url}}"  class="imag img-responsive" style="width:auto;height:auto;max-width:155px;max-height:155px;background-size:cover;"/>
+                {% else %}
+                  <img src="http://placehold.it/200x200" class="imag img-responsive" style="height:155px;width:155px;"/>
               {% endif %}
-          </div>
-          <div class="float-right">
-              {% if not user.is_authenticated %}
-              <a class="btn btn-info btn-custom" href="/accounts/login/?next=/" style="font-weight:500;">Login to Apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
-              {% endif %}
-          </div>
-          <span class="clearfix"></span>
+
+            </div>
+            <ul class="float-left" style="position:relative;top:10px;border-left:2px solid #f9f9f9; height:155px;margin-left:2%;">
+                <li>
+                  <p class="text-muted" style="font-size:20px;">{{o.job_title}}</p>
+               <li>
+                <li style="margin-top:4px;">
+                 <p class="text-muted" style="font-size:14px;">{{o.jobposting.name}}</p>
+               <li>
+                 <br />
+                <li class="text-muted">
+                  <p class="text-muted" style="font-size:10px;color:#6c757d!important;">
+                    {{o.job_description | safe}}
+                  <p>
+                </li>
+            </ul>
+            <div class="float-right" style="width:25%;text-align:left !important;position:relative;top:10px;">
+                <ul>
+                  <li>
+                    <p style="font-size:14px;" class="text-muted">
+                      <i class="material-icons" style="position:relative;top:2px;color:#024b68;font-size:14px;">location_on</i>
+                      Kolkata
+                    </p>
+                  </li>
+                  <br />
+                  <li>
+                       <p style="font-size:14px;" class="text-muted">
+                      <i class="material-icons" style="position:relative;top:2px;color:#024b68;font-size:14px;">access_time</i>
+                      Notice period {{o.notice_period}} months
+                    </p>
+                  </li>
+                  <br />
+                    <li>
+                      <!-- <div class="float-right"> -->
+                          {% if user.profile_type == "employee" %}
+                          <form action="" method="POST">
+                            {% csrf_token %}
+                            <a class="btn btn-info btn-custom" href="/apply/{{o.id}}" style="font-weight:500;padding:6px 14px;">Easy apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
+                          </form>
+                          {% endif %}
+                      <!-- </div>
+                      <div class="float-right"> -->
+                          {% if not user.is_authenticated %}
+                          <a class="btn btn-info btn-custom" href="/accounts/login/?next=/" style="font-weight:500;padding:6px 14px;">Login to Apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
+                          {% endif %}
+                      <!-- </div> -->
+                  </li>
+
+                </ul>
+            </div>
+
           </div>
         </div>
         {% endfor %}
+        {% else %}
+          <div class="row">
+            <div class="col-sm-12">
+              <center class="card padding-15px border-radius-0">
+                <p style="font-size:16px;color:#024b68;" class="">Ah! No Jobs Found for your search!</p>
+              </center>
+            <div>
+          </div>
+        {% endif %}
+
         <div class="row">
           <div class="col-sm-12">
             <center>

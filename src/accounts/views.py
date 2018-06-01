@@ -41,7 +41,10 @@ class LoginView(CreateView):
                 # print(user.id);
                 # messages.add_message(self.request, messages.INFO, 'User Logged in SuccessFully!')
                 print(user.profile_type);
-
+                next = request.GET.get('next', None)
+                if next:
+                    # See caution note below!
+                    return redirect(next)
                 if user.profile_type == "employee" or user.profile_type == False:
                     return redirect('/employee/details/')
                 else:
@@ -122,6 +125,7 @@ class RegisterView(CreateView):
 class LogoutView(View):
     def get(self , request):
         logout(request);
+
         return redirect('/accounts/login/')
 
 class AccountActivationView(TemplateView):

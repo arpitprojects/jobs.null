@@ -68,7 +68,8 @@ class HomeView(ListView):
         query = request.GET.get("q" , None)
 
         if query is not None:
-            company_results = JobPostingModel.objects.search(query)
+            filter_active = JobPostingModel.objects.filter(is_active = True)
+            company_results = JobPostingModel.objects.search(query).filter(is_active = True)
             queryset_chain = chain(
                 company_results
             )
@@ -104,7 +105,7 @@ class ApplyView(SuccessMessageMixin , LoginRequiredMixin , View):
             'company_name': employer.jobposting.name,
             'job_title': employer.job_title,
         })
-
+        
 
         c = send_mail(
             subject_c,
@@ -164,3 +165,16 @@ class ContactView(CreateView):
     template_name = "home/contact.html"
     form_class = ContactModelForm;
     success_url = "/"
+
+
+
+# from urllib.parse import urlencode
+# from django import template
+#
+# register = template.Library()
+#
+# @register.simple_tag(takes_context=True)
+# def url_replace(context, **kwargs):
+#     query = context['request'].GET.dict()
+#     query.update(kwargs)
+#     return urlencode(query)

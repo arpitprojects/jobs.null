@@ -69,6 +69,53 @@ $(function() {
   }
 
 </script>
+
+
+<button onclick="getLocation()" style="display:none;">Try It</button>
+
+
+<script>
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
+    var latLng = position.coords.latitude + "," + position.coords.longitude;
+    var geocoder = geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'latLng': latLng }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[1]) {
+                        alert("Location: " + results[1].formatted_address);
+                    }
+                }
+            });
+}
+//To use this code on your website, get a free API key from Google.
+//Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            alert("User denied the request for Geolocation.")
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.")
+            break;
+        case error.TIMEOUT:
+            alert("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERROR:
+            alert("An unknown error occurred.");
+            break;
+    }
+}
+</script>
+
 <br /><br />
 <section id="job-listing">
   <div class="container">
@@ -123,6 +170,84 @@ $(function() {
       </div>
       <div class="col-sm-9">
         <!-- {{object_list}} -->
+
+        {% if object_list %}
+        {% for o in object_list %}
+        <div class="card border-radius-0" style="border-radius:0 !important;height:140px;overflow:hidden;">
+          <div class="border-radius-0" style="">
+            <!--            Pick from here -->
+            <div class="float-left">
+              {% if o.jobposting.logo %}
+                <img src="{{MEDIA_URL}}{{o.jobposting.logo.url}}"  class="imag img-responsive" style="width:auto;height:auto;max-width:155px;max-height:155px;background-size:cover;"/>
+                {% else %}
+                  <img src="http://placehold.it/200x200" class="imag img-responsive" style="height:155px;width:155px;"/>
+              {% endif %}
+
+            </div>
+            <ul class="float-left" style="position:relative;top:10px;border-left:2px solid #f9f9f9; height:155px;margin-left:2%;">
+                <li>
+                  <p class="text-muted" style="font-size:20px;">{{o.job_title}}</p>
+               <li>
+                <li style="margin-top:4px;">
+                 <p class="text-muted" style="font-size:14px;">{{o.jobposting.name}}</p>
+               <li>
+                 <br />
+                <li class="text-muted">
+                  <p class="text-muted" style="font-size:10px;color:#6c757d!important;">
+                    {{o.job_description | safe}}
+                  <p>
+                </li>
+            </ul>
+            <div class="float-right" style="width:25%;text-align:left !important;position:relative;top:10px;">
+                <ul>
+                  <li>
+                    <p style="font-size:14px;" class="text-muted">
+                      <i class="material-icons" style="position:relative;top:2px;color:#024b68;font-size:14px;">location_on</i>
+                      Kolkata
+                    </p>
+                  </li>
+                  <br />
+                  <li>
+                       <p style="font-size:14px;" class="text-muted">
+                      <i class="material-icons" style="position:relative;top:2px;color:#024b68;font-size:14px;">access_time</i>
+                      Notice period {{o.notice_period}} months
+                    </p>
+                  </li>
+                  <br />
+                    <li>
+                      <!-- <div class="float-right"> -->
+                          {% if user.profile_type == "employee" %}
+                          <form action="" method="POST">
+                            {% csrf_token %}
+                            <a class="btn btn-info btn-custom" href="/apply/{{o.id}}" style="font-weight:500;padding:6px 14px;">Easy apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
+                          </form>
+                          {% endif %}
+                      <!-- </div>
+                      <div class="float-right"> -->
+                          {% if not user.is_authenticated %}
+                          <a class="btn btn-info btn-custom" href="/accounts/login/?next=/" style="font-weight:500;padding:6px 14px;">Login to Apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
+                          {% endif %}
+                      <!-- </div> -->
+                  </li>
+
+                </ul>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+          <div class="row">
+            <div class="col-sm-12">
+              <center class="card padding-15px border-radius-0">
+                <p style="font-size:16px;color:#024b68;" class="">Ah! No Jobs Found for your search!</p>
+              </center>
+            <div>
+          </div>
+        {% endif %}
+
+
+
+        <!-- {% if object_list %}
         {% for o in object_list %}
         <div class="card border-radius-0">
           <div class="card-body">
@@ -165,13 +290,23 @@ $(function() {
           </div>
         </div>
         {% endfor %}
+        {% else %}
+          <div class="row">
+            <div class="col-sm-12">
+              <center class="card padding-15px border-radius-0">
+                <p style="font-size:16px;color:#024b68;" class="">Ah! No Jobs Found for your search!</p>
+              </center>
+            <div>
+          </div>
+        {% endif %} -->
         <div class="row">
           <div class="col-sm-12">
             <center>
+                <!-- {{request.get_full_path}} -->
               {% if is_paginated %}
                 <ul class="pagination justify-content-center">
                   {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q=">&laquo;</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{q}}">&laquo;</a></li>
                   {% else %}
 
                   {% endif %}
@@ -183,7 +318,7 @@ $(function() {
                     {% endif %}
                   {% endfor %}
                   {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q=">&raquo;</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{q}}">&raquo;</a></li>
                   {% else %}
 
                   {% endif %}

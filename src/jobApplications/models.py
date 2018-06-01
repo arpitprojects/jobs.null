@@ -78,4 +78,4 @@ class JobApply(models.Model):
         unique_together = (("employee", "job_app"),)
 
     def __str__(self):
-        return str(self.employee.email  +" "+ self.job_app.job_title);
+        return str(self.employee.email  +" "+ self.job_app.job_title)
