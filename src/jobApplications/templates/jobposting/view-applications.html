@@ -28,8 +28,9 @@
                       <p class="card-text text-muted">Email : <span class="text-info font-size-15px">{{o.employee.email}}</span></p>
                       <br />
                       <!-- <a href="update/{{o.id}}" class="card-link btn btn-warning">Update</a> -->
-                      <a href="/jobs/view-applications/update/{{o.id}}" class="card-link btn btn-warning">Update</a>
-                      <a href="delete/{{o.id}}" class="card-link btn btn-danger">Delete</a>
+
+                      <a href="/jobs/view-applications/{{o.job_app.id}}/update/{{o.id}}" class="card-link btn btn-warning">Update</a>
+                      <a href="/jobs/view-applications/{{o.job_app.id}}/delete/{{o.id}}" class="card-link btn btn-danger">Delete</a>
                     </div>
                     <div class="float-right" style="width:40%;">
                       <p class="card-text text-muted">Applied on : {{o.created_on}}</p>

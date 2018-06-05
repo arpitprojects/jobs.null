@@ -148,13 +148,14 @@ function showError(error) {
     </div>
   </div>
 </section>
+<br />
 <section id="">
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
         {% if messages %}
            {% for message in messages %}
-             <div class="alert alert-info alert-dismissible fade show" role="alert">
+             <div class="alert alert-danger alert-dismissible fade show {{ message.tags }}" role="alert">
                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -164,6 +165,7 @@ function showError(error) {
          {% endif %}
       </div>
     </div>
+
     <div class="row">
       <div class="col-sm-3 padding-5px border-radius-0">
 
@@ -186,7 +188,7 @@ function showError(error) {
             </div>
             <ul class="float-left" style="position:relative;top:10px;border-left:2px solid #f9f9f9; height:155px;margin-left:2%;">
                 <li>
-                  <p class="text-muted" style="font-size:20px;">{{o.job_title}}</p>
+                  <p class="text-muted" style="font-size:20px;color:#4a148c !important;">{{o.job_title}}</p>
                <li>
                 <li style="margin-top:4px;">
                  <p class="text-muted" style="font-size:14px;">{{o.jobposting.name}}</p>

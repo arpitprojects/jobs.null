@@ -86,56 +86,60 @@ class ApplyView(SuccessMessageMixin , LoginRequiredMixin , View):
     # template_name = "jobposting/jobapply_form.html"
     def get(self , request , *args , **kwargs):
         val = self.request.user;
+        status = JobApply.objects.filter(employee = val , job_app  = (JobPostingModel.objects.get(pk = self.kwargs['pk']))).count();
+        if status > 0:
+                messages.add_message(request, messages.WARNING, 'You have already applied for this job!')
+                return HttpResponseRedirect('/');
+        else:
+            
+            employer = JobPostingModel.objects.get(pk = self.kwargs['pk']);
 
-        employer = JobPostingModel.objects.get(pk = self.kwargs['pk']);
+            # End of the email to the employee as well as employer
+            jobapply = JobApply(employee = val ,job_app = (JobPostingModel.objects.get(pk = self.kwargs['pk'])))
+            jobapply.save();
+
+            #For employee
+            subject_c = 'Your application for '+employer.job_title+' at '+employer.jobposting.name+" is submitted"
+
+            from_e = settings.EMAIL_HOST_USER
+
+            to_c = val.email
+
+            message_c = render_to_string('employee_message.html', {
+                'company_name': employer.jobposting.name,
+                'job_title': employer.job_title,
+            })
 
 
-        # End of the email to the employee as well as employer
-        jobapply = JobApply(employee = val ,job_app = (JobPostingModel.objects.get(pk = self.kwargs['pk'])))
-        jobapply.save();
+            c = send_mail(
+                subject_c,
+                message_c,
+                from_e,
+                [to_c],
+                html_message=message_c,
+            )
 
-        #For employee
-        subject_c = 'Your application for '+employer.job_title+' at '+employer.jobposting.name+" is submitted"
+            # For employers
 
-        from_e = settings.EMAIL_HOST_USER
+            subject_e = val.first_name+" applied for "+employer.job_title;
 
-        to_c = val.email
+            message_e = render_to_string('employer_message.html', {
+                'name': val.first_name + " "+val.last_name,
+                'job_title': employer.job_title,
+                'email' : val.email
+            })
 
-        message_c = render_to_string('employee_message.html', {
-            'company_name': employer.jobposting.name,
-            'job_title': employer.job_title,
-        })
-        
+            to_e = employer.jobpostinguser.email;
 
-        c = send_mail(
-            subject_c,
-            message_c,
-            from_e,
-            [to_c],
-            html_message=message_c,
-        )
-
-        # For employers
-
-        subject_e = val.first_name+" applied for "+employer.job_title;
-
-        message_e = render_to_string('employer_message.html', {
-            'name': val.first_name + " "+val.last_name,
-            'job_title': employer.job_title,
-            'email' : val.email
-        })
-
-        to_e = employer.jobpostinguser.email;
-
-        c = send_mail(
-            subject_e,
-            message_e,
-            from_e,
-            [to_e],
-            html_message=message_e,
-        )
-        messages.add_message(request, messages.ERROR, 'Application Applied Sucessfully!')
-        return HttpResponseRedirect('/');
+            c = send_mail(
+                subject_e,
+                message_e,
+                from_e,
+                [to_e],
+                html_message=message_e,
+            )
+            messages.add_message(request, messages.ERROR, 'Application Applied Sucessfully!')
+            return HttpResponseRedirect('/');
     # def form_valid(self, form):
     #     form.instance.eemployee = self.request.user
     #     form.instance.employer = CompanyProfile.objects.get(pk =self.kwargs['string'])

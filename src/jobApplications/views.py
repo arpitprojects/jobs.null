@@ -93,10 +93,11 @@ class JobPostingView(LoginRequiredMixin , CreateView):
 class PreviousPostingsView(LoginRequiredMixin , ListView):
     template_name = "jobposting/prevous_post.html"
     paginate_by = 5
+    count = 5;
 
     def get_queryset(self):
         pk = self.request.user
-        queryset = JobPostingModel.objects.filter(jobpostinguser = pk);
+        queryset = JobPostingModel.objects.filter(jobpostinguser = pk).order_by('-pk');
         return queryset;
 
 
@@ -136,7 +137,9 @@ class ViewApplicationView(LoginRequiredMixin , ListView):
 class ViewApplicationDeleteView(LoginRequiredMixin , DeleteView):
     model = JobApply;
     template_name = "jobposting/view-application-delete.html"
-    success_url = "/jobs/view-applications/"
+
+    def get_success_url(self):
+        return '/jobs/view-applications/'+self.kwargs['superkey']+"/"
 
     def get_queryset(self):
         qs = super(ViewApplicationDeleteView, self).get_queryset()
@@ -147,7 +150,8 @@ class ViewApplicationUpdateView(LoginRequiredMixin , UpdateView):
     model = JobApply
     template_name = "jobposting/view-applications-update.html"
     fields = ['status' , 'update_comment']
-    success_url = "/jobs/view-applications/"
+    def get_success_url(self):
+        return '/jobs/view-applications/'+self.kwargs['superkey']+"/"
 
     def get_queryset(self , *args , **kwargs):
         qs = super(ViewApplicationUpdateView, self).get_queryset();

@@ -21,6 +21,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'arpit.engghelp@gmail.com'
 EMAIL_HOST_PASSWORD = 'Anand@9835673415'
 EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'Null Jobs Team <noreply@jobs.null.com>'
 
 # Application definition
 

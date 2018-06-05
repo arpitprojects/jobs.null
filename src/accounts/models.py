@@ -82,5 +82,3 @@ class ContactModel(models.Model):
 
     def __str__(self):
         return self.email+ " "+ self.subject;
-
-    
