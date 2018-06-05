@@ -82,3 +82,13 @@ class ContactModel(models.Model):
 
     def __str__(self):
         return self.email+ " "+ self.subject;
+
+
+class SubscribeModel(models.Model):
+    email = models.EmailField()
+    created_on = models.DateTimeField(auto_now_add = True)
+    updated_on = models.DateTimeField(auto_now = True)
+
+
+    def __str__(self):
+        return self.email;

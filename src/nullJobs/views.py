@@ -2,7 +2,7 @@ from django.shortcuts import render ,HttpResponse , redirect , HttpResponseRedir
 from django.views.generic import CreateView , TemplateView , DetailView , UpdateView , ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from accounts.models import CommonUserProfile
+from accounts.models import CommonUserProfile , SubscribeModel
 from accounts.decoraters import employer_required , employee_required;
 from django.utils.decorators import method_decorator
 from itertools import chain
@@ -65,7 +65,7 @@ class HomeView(ListView):
 
     def get_queryset(self):
         request = self.request;
-        query = request.GET.get("q" , None)
+        query = request.GET.get("q" , None);
 
         if query is not None:
             filter_active = JobPostingModel.objects.filter(is_active = True)
@@ -91,7 +91,7 @@ class ApplyView(SuccessMessageMixin , LoginRequiredMixin , View):
                 messages.add_message(request, messages.WARNING, 'You have already applied for this job!')
                 return HttpResponseRedirect('/');
         else:
-            
+
             employer = JobPostingModel.objects.get(pk = self.kwargs['pk']);
 
             # End of the email to the employee as well as employer
@@ -170,9 +170,13 @@ class ContactView(CreateView):
     form_class = ContactModelForm;
     success_url = "/"
 
-
-
-# from urllib.parse import urlencode
+# def subscribe(request):
+#     if request.method == "POST":
+#         email = SubscribeModel()
+#         email.email = request.POST.get("email");
+#         email.save();
+#
+# # from urllib.parse import urlencode
 # from django import template
 #
 # register = template.Library()

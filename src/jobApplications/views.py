@@ -2,7 +2,7 @@ from django.shortcuts import render ,HttpResponse , redirect
 from django.views.generic import CreateView , TemplateView , DetailView , UpdateView , ListView , DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .forms import JobPostingModelForm
+from .forms import JobPostingModelForm, JobPostingModelFormNew
 from .models import JobPostingModel
 from accounts.models import CommonUserProfile
 from accounts.decoraters import employer_required;
@@ -11,16 +11,25 @@ from itertools import chain
 from accounts.models import CommonUserProfile
 from company.models import CompanyProfile
 from django.http import Http404
-from .models import JobApply
+from .models import JobApply , JobPostingModel
 from django.urls import reverse_lazy
 from django.contrib import messages
 # Create your views here.
+
+class PostJobAsGuest(CreateView):
+    template_name = "jobposting/jop-post-as-guest.html"
+    form_class = JobPostingModelFormNew
+    success_url = "/"
+
+
+
 
 class ExploreJobs(ListView):
     template_name = "jobposting/index.html"
     queryset = JobPostingModel.objects.filter(is_active = True).order_by('-id')
     paginate_by = 10;
     count = 0;
+
     def get_context_data(self , *args, **kwargs):
         context = super().get_context_data(*args , **kwargs)
         context['count'] = self.count;
@@ -81,13 +90,13 @@ class JobPostingView(LoginRequiredMixin , CreateView):
         form.instance.jobposting = CompanyProfile.objects.get(pk = self.request.user)
         return super().form_valid(form);
 
-    #
-    # def get_context_data(self , **kwargs):
-    #     # print(self.request.user)
-    #     context = super(JobPostingView , self).get_context_data(**kwargs)
-    #     context['condition'] = CompanyProfile.objects.filter(pk = self.request.user).values('name')
-    #     print(context);
-    #     return context
+
+    def get_context_data(self , **kwargs):
+        # print(self.request.user)
+        context = super(JobPostingView , self).get_context_data(**kwargs)
+        context['condition'] = CompanyProfile.objects.filter(pk = self.request.user).values('name')
+        print(context['condition']);
+        return context
 
 @method_decorator([employer_required] , name="dispatch")
 class PreviousPostingsView(LoginRequiredMixin , ListView):

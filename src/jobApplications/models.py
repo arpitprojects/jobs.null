@@ -15,7 +15,6 @@ PROFILE_CHOCES = (
 
 
 class JobPostingManager(models.Manager):
-
     def search(self , query =None):
         #queryset implemntation
         qs = self.get_queryset();

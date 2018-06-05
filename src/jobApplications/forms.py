@@ -8,11 +8,13 @@ class TinyMCEWidget(TinyMCE):
         return False
 
 
+
+
 class JobPostingModelForm(forms.ModelForm):
 
     job_description = forms.CharField(
         widget=TinyMCEWidget(
-            attrs={'required': False, 'cols': 30, 'rows': 10}
+            attrs={'required': True, 'cols': 30, 'rows': 10}
         )
     )
 
@@ -30,6 +32,34 @@ class JobPostingModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(JobPostingModelForm , self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+        })
+
+
+class JobPostingModelFormNew(forms.ModelForm):
+
+    job_description = forms.CharField(
+        widget=TinyMCEWidget(
+            attrs={'required': True, 'cols': 30, 'rows': 10}
+        )
+    )
+
+    def clean_job_title(self):
+        return self.cleaned_data['job_title'].capitalize()
+
+    def clean_location(self):
+        return self.cleaned_data['location'].capitalize()
+
+    class Meta:
+        model = JobPostingModel
+        fields = "__all__"
+
+
+
+    def __init__(self, *args, **kwargs):
+        super(JobPostingModelFormNew , self).__init__(*args, **kwargs)
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update({
                 'class': 'form-control'

@@ -9,6 +9,7 @@ from . import views;
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    # url(r'^subscribe/' ,  views.subscribe , name="subscribe"),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.HomeView.as_view(), name="home"),
     url(r'^about-us/$' , views.AboutView.as_view() , name="about"),
@@ -31,3 +32,7 @@ if settings.DEBUG:
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+admin.site.site_header = "Null Jobs Super Admin Panel"
+admin.site.site_title = "Null Jobs Super Admin Panel"

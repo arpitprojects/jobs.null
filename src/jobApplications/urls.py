@@ -7,6 +7,7 @@ app_name = 'jobApplications'
 
 urlpatterns = [
     url(r'^$' , views.ExploreJobs.as_view() , name="job-post"),
+    # url(r'^post-as-guest/$' , views.PostJobAsGuest.as_view() , name="job-post-guest"),
     url(r'^post/$' , views.JobPostingView.as_view() , name="job-post"),
     url(r'^previous-posts/$' , views.PreviousPostingsView.as_view() , name="previous-post"),
     url(r'^previous-posts/update/(?P<pk>\d+)/$' , views.PreviousPostingsUpdateView.as_view() , name="job-post-update"),
