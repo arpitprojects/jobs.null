@@ -3,7 +3,7 @@ from django.db import models
 from company.models import CompanyProfile
 from accounts.models import CommonUserProfile
 from django.db.models import Q
-
+from .validators import validate_file_extension
 # Create your models here.
 PROFILE_CHOCES = (
     ('initated','Initiated'),
@@ -11,6 +11,14 @@ PROFILE_CHOCES = (
     ('process','Process'),
     ('reject', 'Rejected'),
     ('hired', 'Hired'),
+)
+
+JOB_TYPES = (
+    ('full time','Full Time'),
+    ('internship','Internship'),
+    ('contract','Contract'),
+    ('part time', 'Part Time'),
+    ('freelance', 'Freelance'),
 )
 
 
@@ -22,7 +30,7 @@ class JobPostingManager(models.Manager):
             or_lookup = (Q(job_title__icontains=query)  |
                 Q(notice_period__icontains=query) |
                 Q(location__icontains = query)|
-                Q(jobposting__name__icontains = query)
+                Q(jobposting__name__icontains = query) | Q(company_name__icontains = query) | Q(job_type__icontains = query)
             )
             qs = qs.filter(or_lookup).distinct()
         return qs
@@ -49,8 +57,8 @@ class JobPostingManager(models.Manager):
 
 
 class JobPostingModel(models.Model):
-    jobposting = models.ForeignKey(CompanyProfile , on_delete=models.CASCADE , related_name="company_matching")
-    jobpostinguser = models.ForeignKey(CommonUserProfile , on_delete=models.CASCADE , related_name = "user_matching")
+    jobposting = models.ForeignKey(CompanyProfile , on_delete=models.CASCADE , related_name="company_matching"  ,blank = True , null = True)
+    jobpostinguser = models.ForeignKey(CommonUserProfile , on_delete=models.CASCADE , related_name = "user_matching" , blank = True , null = True)
     is_active = models.BooleanField(default = False)
     job_title = models.CharField(max_length = 255)
     job_description = HTMLField('Content')
@@ -58,6 +66,10 @@ class JobPostingModel(models.Model):
     location = models.CharField(max_length = 255)
     created_on = models.DateTimeField(auto_now_add = True , null = True)
     updated_on = models.DateTimeField(auto_now = True)
+    job_type = models.CharField(max_length=22 , choices=JOB_TYPES , default="full time" )
+    company_name = models.CharField(max_length = 220  , default="Already set through foriegn key")
+    company_website = models.URLField(max_length =255 , default="https://none.com")
+    company_email = models.EmailField(default ="none@none.com")
 
     objects  = JobPostingManager()
 
@@ -66,15 +78,18 @@ class JobPostingModel(models.Model):
 
 
 class JobApply(models.Model):
-    employee = models.ForeignKey(CommonUserProfile , on_delete = models.CASCADE)
+    employee = models.ForeignKey(CommonUserProfile , on_delete = models.CASCADE , null = True , blank = True)
     job_app = models.ForeignKey(JobPostingModel  , on_delete = models.CASCADE)
     update_comment = models.TextField(default = "PLease initaite the recruiting process!")
     status = models.CharField(max_length=22 , choices=PROFILE_CHOCES , default="initated" )
     created_on = models.DateTimeField(auto_now_add = True , null = True)
     updated_on = models.DateTimeField(auto_now = True)
-
+    name = models.CharField(null = True , blank = True , max_length = 255)
+    email = models.EmailField(null = True , blank = True)
+    message = models.CharField(null = True , blank = True , max_length = 255)
+    upload_resume = models.FileField(upload_to="media" , validators=[validate_file_extension] , null = True , blank = True)
     class Meta:
         unique_together = (("employee", "job_app"),)
 
     def __str__(self):
-        return str(self.employee.email  +" "+ self.job_app.job_title)
+        return str(self.job_app.job_title + " :  "+ self.status + " ")

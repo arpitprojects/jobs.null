@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^privacy/$' , views.PrivacyView.as_view() , name="privacy"),
     url(r'^press/$' , views.PressView.as_view() , name="press"),
     url(r'^faq/$' , views.FAQView.as_view() , name="faq"),
+    url(r'^anon-apply/(?P<pk>\d+)/$' , views.AnonApply.as_view() , name="anon-apply"),
     url(r'^apply/(?P<pk>\d+)/$' , views.ApplyView.as_view() , name="apply"),
     url(r'^accounts/' ,  include('accounts.urls'  , namespace="accounts" )),
     url(r'^company/' ,  include('company.urls'  , namespace="company" )),

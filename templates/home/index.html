@@ -1,24 +1,28 @@
 {% extends 'base.html' %}
+{% block title %}
+  Null Jobs | Find Jobs nearby
+{% endblock title %}
 {% block content %}
 <section id="main_background" style="background : linear-gradient(165deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('{{STATIC_URL}}static/img/background.png');">
   <div class="container">
     <div class="row">
       <div class="col-sm-12 text-center">
         <!--ALl the front page goes here-->
-        <center>
-          <p class="head-img-text capitalize font-size-16px">Find the right company for you.</p>
 
-          </center>
-          <form class="form-now" method="GET" action="/jobs/">
-            <div class="form-row">
-              <div class="input-ele offset-md-1 col-md-4 col-sm-12 col-xs-12">
-                <input type="text" class="form-control" style="color:white !important;font-weight:600!important;" name="job_title" id="txtSearch" placeholder="Job Title">
+          <form class="form-now" method="GET" action="/jobs/" style="margin-top:3.5%;padding:3.5%;background-color:rgba(0,0,0,0.4);">
+            <center>
+              <p class="head-img-text capitalize font-size-16px" style="margin-top:0 !important;">Find the right company for you.</p>
+              </center>
+
+            <div class="form-row" style="margin-top:10px;">
+              <div class="input-ele offset-md-1 col-md-5 col-sm-12 col-xs-12">
+                <input type="text" class="form-control main" style="color:#000 !important;font-weight:200!important;" name="job_title" id="txtSearch" placeholder="Job Title">
               </div>
               <div class="input-ele col-md-4 col-sm-12 col-xs-12">
-                <input type="text" class="form-control" style="color:white !important;font-weight:600!important;" name="location" id="location" placeholder="Location">
+                <input type="text" class="form-control main" style="color:#000 !important;font-weight:200!important;" name="location" id="location" placeholder="Location">
               </div>
-              <div class="input-ele col-md-2 col-sm-12 col-xs-12 pull-left btn-main-page">
-              <input type="submit" class="btn btn-primary btn-block btn-custom" value="Search">
+              <div class="input-ele col-md-1 col-sm-12 col-xs-12 pull-left btn-main-page">
+              <button type="submit" class="btn btn-primary btn-custom" style="height:50px;top:4px;" value=""><i class="material-icons">search</i></button>
               </div>
             </div>
           </form>
@@ -27,6 +31,26 @@
   </div>
 </section>
 <style>
+.main:focus{
+  background-color:white;
+  color:#000 !important;
+
+}
+.main{
+  color: white !important;
+    font-weight: 600!important;
+    color: #000 !important;
+    font-weight: 600!important;
+    border: 1px solid #fff;
+    padding: 2%;
+    background-color: white;
+    color: #000 !important;
+    background-image: none !important;
+    border-radius: 1px;
+    font-weight: 200 !important;
+    border-right: 0px solid #000;
+    height: 50px;
+}
 .ui-menu .ui-menu-item a{
   font-family: 'Roboto' , sans-serif !important;
   font-size: 15px !important;
@@ -175,7 +199,7 @@ function showError(error) {
 
         {% if object_list %}
         {% for o in object_list %}
-        <div class="card border-radius-0" style="border-radius:0 !important;height:140px;overflow:hidden;">
+        <div class="border-radius-0" style="border-radius:0 !important;height:140px;overflow:hidden;background-color:white;border:1px solid #D3D3D3;">
           <div class="border-radius-0" style="">
             <!--            Pick from here -->
             <div class="float-left">
@@ -186,17 +210,27 @@ function showError(error) {
               {% endif %}
 
             </div>
-            <ul class="float-left" style="position:relative;top:10px;border-left:2px solid #f9f9f9; height:155px;margin-left:2%;">
+            <ul class="float-left" style="position:relative;top:10px;border-left:2px solid #f9f9f9; height:155px;margin-left:2%;width:54%;">
                 <li>
                   <p class="text-muted" style="font-size:20px;color:#4a148c !important;">{{o.job_title}}</p>
                <li>
                 <li style="margin-top:4px;">
-                 <p class="text-muted" style="font-size:14px;">{{o.jobposting.name}}</p>
+                  {% if o.company_name == "Already set through foriegn key" %}
+                    <p class="text-muted" style="font-size:14px;">{{o.jobposting.name }}</p>
+                    {% else %}
+                    <p class="text-muted" style="font-size:14px;">{{ o.company_name }}</p>
+                  {% endif %}
                <li>
                  <br />
                 <li class="text-muted">
                   <p class="text-muted" style="font-size:10px;color:#6c757d!important;">
                     {{o.job_description | safe}}
+                  <p>
+                </li>
+                <br />
+                <li class="text-muted">
+                  <p class="text-muted" style="font-size:10px;color:#6c757d!important;">
+                    <span class="badge badge-warning">{{o.job_type}}</span>
                   <p>
                 </li>
             </ul>
@@ -224,18 +258,67 @@ function showError(error) {
                             <a class="btn btn-info btn-custom" href="/apply/{{o.id}}" style="font-weight:500;padding:6px 14px;">Easy apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
                           </form>
                           {% endif %}
+                          {% if not user.is_authenticated %}
+                          <div>
+                            <button class="btn btn-info btn-custom" data-toggle="modal" data-target="#myModal_{{o.id}}"  style="font-weight:500;padding:6px 14px;">Guest apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </button>
+                          </div>
+                          {% endif %}
+                          {% if user.profile_type == "employer" %}
+
+                          {% endif %}
                       <!-- </div>
                       <div class="float-right"> -->
-                          {% if not user.is_authenticated %}
+                          <!-- {% if not user.is_authenticated %}
                           <a class="btn btn-info btn-custom" href="/accounts/login/?next=/" style="font-weight:500;padding:6px 14px;">Login to Apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
-                          {% endif %}
+                          {% endif %} -->
                       <!-- </div> -->
                   </li>
+                  <div class="modal" id="myModal_{{o.id}}" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                        <center>
+                          <h5 class="modal-title text-center">Apply to this job as guest</h5>
+                        </center>
+                        </div>
+                        <form action="/anon-apply/{{o.id}}/" method="POST" enctype="multipart/form-data" class="modal-body">
+                            {% csrf_token %}
+                            <div class="form-group">
+                               <label for="name" class="bmd-label-floating">Name</label>
+                               <input type="text" name="name" class="form-control" id="name">
+                            </div>
+                            <div class="form-group">
+                             <label for="email" class="bmd-label-floating">Email</label>
+                             <input type="email" class="form-control" name="email" id="email">
+                             <span class="bmd-help">We'll never share your email with anyone else.</span>
+                           </div>
+                           <div class="form-group">
+                              <label for="message" class="bmd-label-floating">Message</label>
+                              <input type="text" class="form-control" name="message" id="message">
+                           </div>
+                          <div>
+                            <label for="id_resume" class="bmd-label-floating">Upload Resume:</label>
+                            <input type="file" name="resume" class="form-control" id="id_resume">
+                          </div>
+                          <br />
+                             <button type="submit" class="btn btn-custom btn-block">Apply to this job</button>
+                             <button type="button"  class="btn btn-block btn-danger" data-dismiss="modal">Cancel</button>
+
+                          </form>
+                          <div class="modal-footer">
+
+
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+
 
                 </ul>
             </div>
           </div>
         </div>
+        <br />
         {% endfor %}
         {% else %}
           <div class="row">
@@ -247,61 +330,6 @@ function showError(error) {
           </div>
         {% endif %}
 
-
-
-        <!-- {% if object_list %}
-        {% for o in object_list %}
-        <div class="card border-radius-0">
-          <div class="card-body">
-            <div class="float-left">
-              <a href="{{o.jobposting.website}}">
-
-                  <h4 class="card-title font-weight-200 font-family font-size-18px" style="font-size:22px;font-weight:400;">{{o.jobposting.name}}</h4>
-
-              </a>
-
-              <h4 class="card-title font-weight-200 font-family font-size-16px" style="color:red;">{{o.job_title}}</h4>
-            </div>
-            <div class="float-right">
-                  <h4 class="card-title font-weight-200 font-family font-size-14px" style="color:red;">{{o.location}}</h4>
-            </div>
-            <span class="clearfix" style="clear:both;display:inline-block;"></span>
-
-            <br /><br /><br /><br /><br /><br /><br/>
-            <div class="float-left">
-            <h6 class="card-subtitle mb-2 text-muted capitalize">{{o.job_description | safe}}</h6>
-            <p class="card-text"></p>
-            <p class="text-muted capitalize">Notice Period - {{o.notice_period}} months.</p>
-            <br />
-            <p style="" class="capitalize text-muted">{{o.jobposting.line1 }} , {{ o.jobposting.line2}} , {{o.jobposting.city}} , {{o.jobposting.state}}</p>
-          </div>
-          <div class="float-right">
-              {% if user.profile_type == "employee" %}
-              <form action="" method="POST">
-                {% csrf_token %}
-                <a class="btn btn-info btn-custom" href="/apply/{{o.id}}" style="font-weight:500;">Easy apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
-              </form>
-              {% endif %}
-          </div>
-          <div class="float-right">
-              {% if not user.is_authenticated %}
-              <a class="btn btn-info btn-custom" href="/accounts/login/?next=/" style="font-weight:500;">Login to Apply&nbsp;&nbsp;<i style="position:relative;top:-1px;" class="material-icons">play_arrow</i> </a>
-              {% endif %}
-          </div>
-          <span class="clearfix"></span>
-          </div>
-        </div>
-        {% endfor %}
-        {% else %}
-          <div class="row">
-            <div class="col-sm-12">
-              <center class="card padding-15px border-radius-0">
-                <p style="font-size:16px;color:#024b68;" class="">Ah! No Jobs Found for your search!</p>
-              </center>
-            <div>
-          </div>
-        {% endif %} -->
-        
         <div class="row">
           <div class="col-sm-12">
             <center>
@@ -309,7 +337,7 @@ function showError(error) {
               {% if is_paginated %}
                 <ul class="pagination justify-content-center">
                   {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q=">&laquo;</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo;</a></li>
                   {% else %}
 
                   {% endif %}
@@ -317,12 +345,12 @@ function showError(error) {
                     {% if page_obj.number == i %}
                       <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
                     {% else %}
-                      <li class="page-item"><a class="page-link" href="?page={{ i }}&q=">{{ i }}</a></li>
+                      <li class="page-item"><a class="page-link" href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ i }}</a></li>
                     {% endif %}
 
                   {% endfor %}
                   {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q=">&raquo;</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&raquo;</a></li>
                   {% else %}
 
                   {% endif %}

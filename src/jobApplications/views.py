@@ -2,7 +2,7 @@ from django.shortcuts import render ,HttpResponse , redirect
 from django.views.generic import CreateView , TemplateView , DetailView , UpdateView , ListView , DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .forms import JobPostingModelForm, JobPostingModelFormNew
+from .forms import JobPostingModelForm, JobPostingModelFormNew , JobPostingModelFormGuest
 from .models import JobPostingModel
 from accounts.models import CommonUserProfile
 from accounts.decoraters import employer_required;
@@ -18,16 +18,14 @@ from django.contrib import messages
 
 class PostJobAsGuest(CreateView):
     template_name = "jobposting/jop-post-as-guest.html"
-    form_class = JobPostingModelFormNew
+    form_class = JobPostingModelFormGuest
     success_url = "/"
-
-
 
 
 class ExploreJobs(ListView):
     template_name = "jobposting/index.html"
     queryset = JobPostingModel.objects.filter(is_active = True).order_by('-id')
-    paginate_by = 10;
+    paginate_by = 5;
     count = 0;
 
     def get_context_data(self , *args, **kwargs):

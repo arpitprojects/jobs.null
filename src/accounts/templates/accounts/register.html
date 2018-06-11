@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
-
+{% block title %}
+Register
+{% endblock title %}
 {% block content %}
 <section id="login" style="margin-top:5%;">
 <div class="container">
@@ -17,8 +19,9 @@
         <form action="" method="POST">
           {% csrf_token %}
           {{form.as_p}}
-
-          <br /><br />
+          <br />
+          <!-- <div class="g-recaptcha" data-sitekey="6LfwUV4UAAAAAE9Hxet3Hur88x0ZMExeReUtPLsd"></div> -->
+          <br />
           <input type="submit" id="register_btn" class="btn btn-success btn-block" value="Submit"/>
         </form>
       </div>
@@ -34,7 +37,7 @@
       var domain = email.substring(email.lastIndexOf("@") +1);
       domain = domain.trim();
       if(arr.includes(domain)){
-        $.mdtoast('Employer needs a buisness email!'); 
+        $.mdtoast('Employer needs a buisness email!');
         return false;
       }else{
         console.log('Sucessfully Validated!');

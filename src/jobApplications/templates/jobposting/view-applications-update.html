@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block title %}
+  Update Application Status
+{% endblock title %}
 {% block content %}
   <div class="container card card-3 border-radius-0">
     <div class="row ">
@@ -18,4 +21,7 @@
           </div>
     </div>
   </div>
+  <script>
+    $('input').addClass('form-control');
+  </script>
 {% endblock content %}

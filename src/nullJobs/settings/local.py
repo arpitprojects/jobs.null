@@ -13,7 +13,7 @@ SECRET_KEY = '43dzwnuv$yq=)j)isd71+=j$pb#t3gk2r9&*g!lga$(w^=q=i+'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LfwUV4UAAAAAEuW5PvweFbW8QM5XyIrczvpF7-Z'    
 ALLOWED_HOSTS = []
 
 EMAIL_USE_TLS = True
@@ -26,8 +26,6 @@ DEFAULT_FROM_EMAIL = 'Null Jobs Team <noreply@jobs.null.com>'
 # Application definition
 
 INSTALLED_APPS = [
-    'dal',
-    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +37,8 @@ INSTALLED_APPS = [
     'company',
     'employee',
     'tinymce',
-    'jobApplications'
+    'jobApplications',
+    'analytics'
 ]
 
 MIDDLEWARE = [
